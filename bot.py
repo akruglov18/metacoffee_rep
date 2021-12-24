@@ -94,20 +94,53 @@ def callback_worker(call):
         # выбираем кофе
         bot.edit_message_reply_markup(call.from_user.id, call.message.message_id)
         if call.data[1:] == 'choose_coffee':
-            # создаем кнопки для выбора кофе
-            orders.pop(call.from_user.id)
-            bot.send_message(call.message.chat.id, text='На данный момент кофе нету')
-        elif call.data[1:] == 'coffee_1':
-            # записываем выбранное кофе в заказ
-            orders[call.from_user.id]['coffee'] = 'russian_coffee_1'
+            choose_coffe = types.InlineKeyboardMarkup()
+            choose_coffe.add(types.InlineKeyboardButton(text='Латте',           callback_data='1сoffee_1'))
+            choose_coffe.add(types.InlineKeyboardButton(text='Эспрессо',        callback_data='1сoffee_2'))
+            choose_coffe.add(types.InlineKeyboardButton(text='Мокко',           callback_data='1сoffee_3'))
+            choose_coffe.add(types.InlineKeyboardButton(text='Капучино',        callback_data='1сoffee_4'))
+            choose_coffe.add(types.InlineKeyboardButton(text='Горячий шоколад', callback_data='1сoffee_5'))
+            bot.send_message(call.from_user.id, text='Выберите кофе', reply_markup=choose_coffe)
+        elif call.data[1:] == 'сoffee_1':
+            orders[call.from_user.id]['coffee'] = 'Латте'
             bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
         elif call.data[1:] == 'coffee_2':
-            # и тд
-            pass
+            orders[call.from_user.id]['coffee'] = 'Эспрессо'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
+        elif call.data[1:] == 'coffee_3':
+            orders[call.from_user.id]['coffee'] = 'Мокко'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
+        elif call.data[1:] == 'coffee_4':
+            orders[call.from_user.id]['coffee'] = 'Капучино'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
+        elif call.data[1:] == 'coffee_5':
+            orders[call.from_user.id]['coffee'] = 'Горячий шоколад'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
     elif call.data[0] == '2':
-        # выбираем узор
-        # аналогично выбору кофе
-        pass
+        bot.edit_message_reply_markup(call.from_user.id, call.message.message_id)
+        if call.data[1:] == 'choose_pattern':
+            choose_pattern = types.InlineKeyboardMarkup()
+            choose_pattern.add(types.InlineKeyboardButton(text='Сердечко',      callback_data='2pattern_1'))
+            choose_pattern.add(types.InlineKeyboardButton(text='Пейзаж',        callback_data='2pattern_2'))
+            choose_pattern.add(types.InlineKeyboardButton(text='Лебедь',        callback_data='2pattern_3'))
+            choose_pattern.add(types.InlineKeyboardButton(text='Смайлик',       callback_data='2pattern_4'))
+            choose_pattern.add(types.InlineKeyboardButton(text='Без узора',     callback_data='2pattern_5'))
+            bot.send_message(call.from_user.id, text='Выберите узор для кофе', reply_markup=choose_pattern)
+        elif call.data[1:] == 'pattern_1':
+            orders[call.from_user.id]['pattern'] = 'Сердечко'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
+        elif call.data[1:] == 'pattern_2':
+            orders[call.from_user.id]['pattern'] = 'Пейзаж'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
+        elif call.data[1:] == 'pattern_3':
+            orders[call.from_user.id]['pattern'] = 'Лебедь'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
+        elif call.data[1:] == 'pattern_4':
+            orders[call.from_user.id]['pattern'] = 'Смайлик'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
+        elif call.data[1:] == 'pattern_5':
+            orders[call.from_user.id]['pattern'] = 'Без узора'
+            bot.send_message(call.message.chat.id, text='Оформление заказа', reply_markup=main_menu)
     elif call.data[0] == '3':
         # вводим адрес
         # тут сложна, через кнопку не сделаешь
@@ -131,5 +164,6 @@ def callback_worker(call):
         # отменяем заказ
         orders.pop(call.from_user.id)
         bot.edit_message_reply_markup(call.from_user.id, call.message.message_id)
+    print(orders[call.from_user.id])
 
 bot.polling(none_stop=True, interval=0)
